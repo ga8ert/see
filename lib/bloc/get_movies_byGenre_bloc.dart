@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:rxdart/subjects.dart';
 import 'package:untitled/model/movie_response.dart';
 import 'package:untitled/repository/repository.dart';
@@ -11,9 +12,14 @@ class MovieListByGenryBloc{
     _subject.sink.add(response);
   }
 
-  dispose(){
+  void drainStream() { _subject.value != null;}
+  @mustCallSuper
+  void dispose() async {
+    await _subject.drain();
     _subject.close();
   }
+
+
   BehaviorSubject<MovieResponse> get subject => _subject;
 }
 final moviesByGenreBloc = MovieListByGenryBloc();
